@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Loan EMI Calculator India – EMI, Interest & Amortization</title>
+<title>Home Loan EMI Calculator India – Interest & Amortization</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Free Loan EMI Calculator for India with interest breakup, amortization schedule, pie chart and yearly interest bar chart.">
+<meta name="description" content="Home Loan EMI Calculator India with interest breakup, amortization schedule, pie chart and yearly interest bar chart.">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -67,18 +67,18 @@ th {
 
 <div class="container">
 
-<h1>Loan EMI Calculator (India)</h1>
+<h1>Home Loan EMI Calculator (India)</h1>
 
 <p>
-Use this free Loan EMI Calculator to calculate your monthly EMI, total interest payable,
-and view a detailed amortization schedule with charts.
+Use this Home Loan EMI Calculator to calculate your monthly home loan EMI,
+total interest payable, and view a complete amortization schedule with charts.
 </p>
 
-<input type="number" id="amount" placeholder="Loan Amount (₹)">
+<input type="number" id="amount" placeholder="Home Loan Amount (₹)">
 <input type="number" id="rate" placeholder="Interest Rate (%)">
-<input type="number" id="tenure" placeholder="Tenure (Years)">
+<input type="number" id="tenure" placeholder="Loan Tenure (Years)">
 
-<button onclick="calculateEMI()">Calculate EMI</button>
+<button onclick="calculateEMI()">Calculate Home Loan EMI</button>
 
 <div class="result" id="emi"></div>
 <div class="result" id="interest"></div>
@@ -89,7 +89,7 @@ and view a detailed amortization schedule with charts.
   <canvas id="barChart"></canvas>
 </div>
 
-<h2>Amortization Schedule</h2>
+<h2>Home Loan Amortization Schedule</h2>
 <table>
 <thead>
 <tr>
@@ -103,66 +103,55 @@ and view a detailed amortization schedule with charts.
 <tbody id="schedule"></tbody>
 </table>
 
-<!-- SEO CONTENT STARTS HERE -->
+<!-- SEO CONTENT -->
 
-<h2>What is EMI?</h2>
+<h2>What is Home Loan EMI?</h2>
 <p>
-EMI (Equated Monthly Installment) is the fixed amount paid by a borrower every month
-to repay a loan. It includes both the principal amount and the interest charged by the lender.
+Home Loan EMI (Equated Monthly Installment) is the fixed monthly payment made by
+a borrower to repay a home loan. It consists of both interest and principal components.
 </p>
 
-<h2>EMI Calculation Formula</h2>
-<p>
-The EMI is calculated using the following formula:
-</p>
+<h2>Home Loan EMI Formula</h2>
 <p>
 <strong>EMI = P × R × (1 + R)<sup>N</sup> / [(1 + R)<sup>N</sup> – 1]</strong>
 </p>
 <ul>
-<li><strong>P</strong> = Loan Amount</li>
+<li><strong>P</strong> = Home Loan Amount</li>
 <li><strong>R</strong> = Monthly Interest Rate</li>
 <li><strong>N</strong> = Number of Monthly Installments</li>
 </ul>
 
-<h2>Example of EMI Calculation</h2>
+<h2>Example of Home Loan EMI Calculation</h2>
 <p>
-If you take a loan of ₹5,00,000 at an interest rate of 10% per annum for a tenure of
-5 years, your monthly EMI will be approximately ₹10,624.
+If you take a home loan of ₹50,00,000 at an interest rate of 8.5% per annum for
+20 years, your monthly EMI will be approximately ₹43,391.
 </p>
 
-<h2>Factors Affecting EMI</h2>
+<h2>Factors Affecting Home Loan EMI</h2>
 <ul>
 <li>Loan amount</li>
 <li>Interest rate</li>
 <li>Loan tenure</li>
-<li>Type of loan</li>
+<li>Type of interest rate (fixed or floating)</li>
 </ul>
 
-<h2>Understanding the Amortization Schedule</h2>
+<h2>Understanding Home Loan Amortization</h2>
 <p>
-The amortization schedule shows how each EMI payment is divided into interest and
-principal. Initially, the interest portion is higher, and over time the principal repayment
-increases.
+In a home loan, the interest portion is higher in the initial years. As the loan progresses,
+the principal repayment increases, reducing the outstanding balance gradually.
 </p>
 
 <h2>FAQs</h2>
 
-<h3>Is EMI the same every month?</h3>
+<h3>Is home loan EMI fixed?</h3>
 <p>
-Yes, for fixed-rate loans, the EMI remains the same throughout the loan tenure.
+For fixed-rate loans, EMI remains the same. For floating-rate loans, EMI may change.
 </p>
 
-<h3>Can I reduce my EMI?</h3>
+<h3>Can prepayment reduce home loan interest?</h3>
 <p>
-You can reduce EMI by increasing the loan tenure or negotiating a lower interest rate.
+Yes, prepaying your home loan reduces the outstanding principal and total interest payable.
 </p>
-
-<h3>Does prepayment reduce interest?</h3>
-<p>
-Yes, prepayment reduces the outstanding principal, which lowers the total interest payable.
-</p>
-
-<!-- SEO CONTENT ENDS HERE -->
 
 </div>
 
