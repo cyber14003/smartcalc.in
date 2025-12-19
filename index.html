@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <title>Loan EMI Calculator India</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Loan EMI Calculator with interest breakup and pie chart for India.">
+<meta name="description" content="Loan EMI Calculator with amortization schedule and interest breakup.">
 
-<!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -16,12 +15,11 @@ body {
   padding: 20px;
 }
 .container {
-  max-width: 500px;
+  max-width: 900px;
   background: #fff;
   padding: 20px;
   margin: auto;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 input, button {
   width: 100%;
@@ -30,15 +28,31 @@ input, button {
 }
 button {
   background: #007bff;
-  color: #fff;
+  color: white;
   border: none;
   cursor: pointer;
 }
 .result {
-  margin-top: 15px;
+  margin-top: 10px;
   font-weight: bold;
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  font-size: 13px;
+  text-align: right;
+}
+th {
+  background: #007bff;
+  color: white;
+}
 canvas {
+  max-width: 400px;
   margin-top: 20px;
 }
 </style>
@@ -47,39 +61,71 @@ canvas {
 <body>
 
 <div class="container">
-  <h2>Loan EMI Calculator</h2>
+<h2>Loan EMI Calculator</h2>
 
-  <input type="number" id="amount" placeholder="Loan Amount (₹)">
-  <input type="number" id="rate" placeholder="Interest Rate (%)">
-  <input type="number" id="tenure" placeholder="Tenure (Years)">
+<input type="number" id="amount" placeholder="Loan Amount (₹)">
+<input type="number" id="rate" placeholder="Interest Rate (%)">
+<input type="number" id="tenure" placeholder="Tenure (Years)">
 
-  <button onclick="calculateEMI()">Calculate EMI</button>
+<button onclick="calculateEMI()">Calculate EMI</button>
 
-  <div class="result" id="emi"></div>
-  <div class="result" id="interest"></div>
-  <div class="result" id="total"></div>
+<div class="result" id="emi"></div>
+<div class="result" id="interest"></div>
+<div class="result" id="total"></div>
 
-  <canvas id="emiChart"></canvas>
+<canvas id="emiChart"></canvas>
+
+<h3>Amortization Schedule</h3>
+<table>
+<thead>
+<tr>
+<th>Month</th>
+<th>EMI</th>
+<th>Interest</th>
+<th>Principal</th>
+<th>Balance</th>
+</tr>
+</thead>
+<tbody id="schedule"></tbody>
+</table>
 </div>
 
 <script>
 let chart;
 
 function calculateEMI() {
-  let P = parseFloat(document.getElementById("amount").value);
-  let R = parseFloat(document.getElementById("rate").value) / 12 / 100;
-  let N = parseFloat(document.getElementById("tenure").value) * 12;
+  let P = parseFloat(amount.value);
+  let R = parseFloat(rate.value) / 12 / 100;
+  let N = parseInt(tenure.value) * 12;
 
   if (!P || !R || !N) {
-    alert("Please enter all values");
+    alert("Enter all values");
     return;
   }
 
   let EMI = (P * R * Math.pow(1 + R, N)) /
             (Math.pow(1 + R, N) - 1);
 
-  let totalPayment = EMI * N;
-  let totalInterest = totalPayment - P;
+  let balance = P;
+  let totalInterest = 0;
+  let table = "";
+
+  for (let i = 1; i <= N; i++) {
+    let interest = balance * R;
+    let principal = EMI - interest;
+    balance -= principal;
+    totalInterest += interest;
+
+    table += `<tr>
+      <td>${i}</td>
+      <td>₹${EMI.toFixed(2)}</td>
+      <td>₹${interest.toFixed(2)}</td>
+      <td>₹${principal.toFixed(2)}</td>
+      <td>₹${balance > 0 ? balance.toFixed(2) : "0.00"}</td>
+    </tr>`;
+  }
+
+  document.getElementById("schedule").innerHTML = table;
 
   document.getElementById("emi").innerHTML =
     "Monthly EMI: ₹" + EMI.toFixed(2);
@@ -88,29 +134,21 @@ function calculateEMI() {
     "Total Interest: ₹" + totalInterest.toFixed(2);
 
   document.getElementById("total").innerHTML =
-    "Total Payment: ₹" + totalPayment.toFixed(2);
+    "Total Payment: ₹" + (P + totalInterest).toFixed(2);
 
   drawChart(P, totalInterest);
 }
 
 function drawChart(principal, interest) {
-  let ctx = document.getElementById("emiChart").getContext("2d");
-
-  if (chart) {
-    chart.destroy();
-  }
-
-  chart = new Chart(ctx, {
+  if (chart) chart.destroy();
+  chart = new Chart(emiChart, {
     type: "pie",
     data: {
-      labels: ["Principal Amount", "Total Interest"],
+      labels: ["Principal", "Interest"],
       datasets: [{
         data: [principal, interest],
         backgroundColor: ["#28a745", "#dc3545"]
       }]
-    },
-    options: {
-      responsive: true
     }
   });
 }
