@@ -144,3 +144,31 @@ function calculateSIP() {
 
   document.getElementById("invested").innerHTML =
     "Total Investment: ₹" + invested.toFixed(2);
+
+  document.getElementById("returns").innerHTML =
+    "Estimated Returns: ₹" + gain.toFixed(2);
+
+  document.getElementById("total").innerHTML =
+    "Maturity Amount: ₹" + maturity.toFixed(2);
+
+  drawChart(invested, gain);
+}
+
+function drawChart(invested, gain) {
+  if (sipChart) sipChart.destroy();
+
+  sipChart = new Chart(document.getElementById("sipChart"), {
+    type: "pie",
+    data: {
+      labels: ["Total Investment", "Returns"],
+      datasets: [{
+        data: [invested, gain],
+        backgroundColor: ["#007bff", "#28a745"]
+      }]
+    }
+  });
+}
+</script>
+
+</body>
+</html>
