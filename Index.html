@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loan EMI Calculator India</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free Loan EMI Calculator for India. Calculate your monthly EMI instantly.">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+    .box {
+      max-width: 400px;
+      background: #fff;
+      padding: 20px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    h1 {
+      text-align: center;
+    }
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Loan EMI Calculator</h1>
+
+<div class="box">
+  <input type="number" id="amount" placeholder="Loan Amount (₹)">
+  <input type="number" id="rate" placeholder="Interest Rate (%)">
+  <input type="number" id="tenure" placeholder="Tenure (Years)">
+
+  <button onclick="calculateEMI()">Calculate EMI</button>
+
+  <div class="result" id="output"></div>
+</div>
+
+<script>
+function calculateEMI() {
+  let P = document.getElementById("amount").value;
+  let R = document.getElementById("rate").value / 12 / 100;
+  let N = document.getElementById("tenure").value * 12;
+
+  if (P && R && N) {
+    let EMI = (P * R * Math.pow(1 + R, N)) /
+              (Math.pow(1 + R, N) - 1);
+
+    document.getElementById("output").innerHTML =
+      "Monthly EMI: ₹" + EMI.toFixed(2);
+  } else {
+    document.getElementById("output").innerHTML =
+      "Please fill all fields.";
+  }
+}
+</script>
+
+</body>
+</html>
