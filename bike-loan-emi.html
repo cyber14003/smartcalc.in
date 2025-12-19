@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bike Loan EMI Calculator India – EMI, Interest & Amortization</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Bike Loan EMI Calculator India with interest breakup, amortization schedule, pie chart and yearly interest bar chart.">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  padding: 20px;
+}
+.container {
+  max-width: 1000px;
+  background: #fff;
+  padding: 20px;
+  margin: auto;
+  border-radius: 8px;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.result {
+  margin-top: 10px;
+  font-weight: bold;
+}
+.chart-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+canvas {
+  max-width: 450px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  font-size: 13px;
+  text-align: right;
+}
+th {
+  background: #007bff;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Bike Loan EMI Calculator (India)</h1>
+
+<p>
+Use this Bike Loan EMI Calculator to calculate your two-wheeler loan EMI,
+total interest payable, and view a complete amortization schedule with charts.
+</p>
+
+<input type="number" id="amount" placeholder="Bike Loan Amount (₹)">
+<input type="number" id="rate" placeholder="Interest Rate (%)">
+<input type="number" id="tenure" placeholder="Loan Tenure (Years)">
+
+<button onclick="calculateEMI()">Calculate Bike Loan EMI</button>
+
+<div class="result" id="emi"></div>
+<div class="result" id="interest"></div>
+<div class="result" id="total"></div>
+
+<div class="chart-wrapper">
+  <canvas id="pieChart"></canvas>
+  <canvas id="barChart"></canvas>
+</div>
+
+<h2>Bike Loan Amortization Schedule</h2>
+<table>
+<thead>
+<tr>
+<th>Month</th>
+<th>EMI</th>
+<th>Interest</th>
+<th>Principal</th>
+<th>Balance</th>
+</tr>
+</thead>
+<tbody id="schedule"></tbody>
+</table>
+
+<!-- SEO CONTENT -->
+
+<h2>What is Bike Loan EMI?</h2>
+<p>
+Bike Loan EMI is the fixed monthly amount paid to repay a two-wheeler loan.
+It includes both interest and principal repayment.
+</p>
+
+<h2>Bike Loan EMI Formula</h2>
+<p>
+<strong>EMI = P × R × (1 + R)<sup>N</sup> / [(1 + R)<sup>N</sup> – 1]</strong>
+</p>
+<ul>
+<li><strong>P</strong> = Bike Loan Amount</li>
+<li><strong>R</strong> = Monthly Interest Rate</li>
+<li><strong>N</strong> = Number of Monthly Installments</li>
+</ul>
+
+<h2>Example of Bike Loan EMI Calculation</h2>
+<p>
+If you take a bike loan of ₹1,00,000 at an interest rate of 12% per annum
+for 3 years, your monthly EMI will be approximately ₹3,321.
+</p>
+
+<h2>Factors Affecting Bike Loan EMI</h2>
+<ul>
+<li>Bike price</li>
+<li>Interest rate</li>
+<li>Loan tenure</li>
+<li>Down payment</li>
+</ul>
+
+<h2>FAQs</h2>
+
+<h3>Is bike loan EMI fixed?</h3>
+<p>
+Yes, for fixed-rate bike loans, EMI remains the same throughout the tenure.
+</p>
+
+<h3>Can bike loan be prepaid?</h3>
+<p>
+Yes, most banks allow prepayment, which reduces interest payable.
+</p>
+
+</div>
+
+<script>
+let pieChart, barChart;
+
+function calculateEMI() {
+  let P = parseFloat(amount.value);
+  let R = parseFloat(rate.value) / 12 / 100;
+  let years = parseInt(tenure.value);
+  let N = years * 12;
+
+  if (!P || !R || !N) {
+    alert("Enter all values");
+    return;
+  }
+
+  let EMI = (P * R * Math.pow(1 + R, N)) /
+            (Math.pow(1 + R, N) - 1);
+
+  let balance = P;
+  let totalInterest = 0;
+  let table = "";
+  let yearlyInterest = new Array(years).fill(0);
+
+  for (let i = 1; i <= N; i++) {
+    let interest = balance * R;
+    let principal = EMI - interest;
+    balance -= principal;
+    totalInterest += interest;
+
+    let yearIndex = Math.ceil(i / 12) - 1;
+    yearlyInterest[yearIndex] += interest;
+
+    table += `<tr>
+      <td>${i}</td>
+      <td>₹${EMI.toFixed(2)}</td>
+      <td>₹${interest.toFixed(2)}</td>
+      <td>₹${principal.toFixed(2)}</td>
+      <td>₹${balance > 0 ? balance.toFixed(2) : "0.00"}</td>
+    </tr>`;
+  }
+
+  schedule.innerHTML = table;
+
+  emi.innerHTML = "Monthly EMI: ₹" + EMI.toFixed(2);
+  interest.innerHTML = "Total Interest: ₹" + totalInterest.toFixed(2);
+  total.innerHTML = "Total Payment: ₹" + (P + totalInterest).toFixed(2);
+
+  drawPie(P, totalInterest);
+  drawBar(yearlyInterest);
+}
+
+function drawPie(principal, interest) {
+  if (pieChart) pieChart.destroy();
+  pieChart = new Chart(document.getElementById("pieChart"), {
+    type: "pie",
+    data: {
+      labels: ["Principal", "Interest"],
+      datasets: [{
+        data: [principal, interest],
+        backgroundColor: ["#28a745", "#dc3545"]
+      }]
+    }
+  });
+}
+
+function drawBar(data) {
+  if (barChart) barChart.destroy();
+  barChart = new Chart(document.getElementById("barChart"), {
+    type: "bar",
+    data: {
+      labels: data.map((_, i) => "Year " + (i + 1)),
+      datasets: [{
+        label: "Interest Paid (₹)",
+        data: data,
+        backgroundColor: "#007bff"
+      }]
+    }
+  });
+}
+</script>
+
+</body>
+</html>
