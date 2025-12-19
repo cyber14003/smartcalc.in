@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Loan EMI Calculator India</title>
+<title>Loan EMI Calculator India – EMI, Interest & Amortization</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Loan EMI Calculator with amortization schedule and interest charts.">
+<meta name="description" content="Free Loan EMI Calculator for India with interest breakup, amortization schedule, pie chart and yearly interest bar chart.">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -66,7 +66,13 @@ th {
 <body>
 
 <div class="container">
-<h2>Loan EMI Calculator</h2>
+
+<h1>Loan EMI Calculator (India)</h1>
+
+<p>
+Use this free Loan EMI Calculator to calculate your monthly EMI, total interest payable,
+and view a detailed amortization schedule with charts.
+</p>
 
 <input type="number" id="amount" placeholder="Loan Amount (₹)">
 <input type="number" id="rate" placeholder="Interest Rate (%)">
@@ -83,7 +89,7 @@ th {
   <canvas id="barChart"></canvas>
 </div>
 
-<h3>Amortization Schedule</h3>
+<h2>Amortization Schedule</h2>
 <table>
 <thead>
 <tr>
@@ -96,6 +102,68 @@ th {
 </thead>
 <tbody id="schedule"></tbody>
 </table>
+
+<!-- SEO CONTENT STARTS HERE -->
+
+<h2>What is EMI?</h2>
+<p>
+EMI (Equated Monthly Installment) is the fixed amount paid by a borrower every month
+to repay a loan. It includes both the principal amount and the interest charged by the lender.
+</p>
+
+<h2>EMI Calculation Formula</h2>
+<p>
+The EMI is calculated using the following formula:
+</p>
+<p>
+<strong>EMI = P × R × (1 + R)<sup>N</sup> / [(1 + R)<sup>N</sup> – 1]</strong>
+</p>
+<ul>
+<li><strong>P</strong> = Loan Amount</li>
+<li><strong>R</strong> = Monthly Interest Rate</li>
+<li><strong>N</strong> = Number of Monthly Installments</li>
+</ul>
+
+<h2>Example of EMI Calculation</h2>
+<p>
+If you take a loan of ₹5,00,000 at an interest rate of 10% per annum for a tenure of
+5 years, your monthly EMI will be approximately ₹10,624.
+</p>
+
+<h2>Factors Affecting EMI</h2>
+<ul>
+<li>Loan amount</li>
+<li>Interest rate</li>
+<li>Loan tenure</li>
+<li>Type of loan</li>
+</ul>
+
+<h2>Understanding the Amortization Schedule</h2>
+<p>
+The amortization schedule shows how each EMI payment is divided into interest and
+principal. Initially, the interest portion is higher, and over time the principal repayment
+increases.
+</p>
+
+<h2>FAQs</h2>
+
+<h3>Is EMI the same every month?</h3>
+<p>
+Yes, for fixed-rate loans, the EMI remains the same throughout the loan tenure.
+</p>
+
+<h3>Can I reduce my EMI?</h3>
+<p>
+You can reduce EMI by increasing the loan tenure or negotiating a lower interest rate.
+</p>
+
+<h3>Does prepayment reduce interest?</h3>
+<p>
+Yes, prepayment reduces the outstanding principal, which lowers the total interest payable.
+</p>
+
+<!-- SEO CONTENT ENDS HERE -->
+
 </div>
 
 <script>
@@ -150,7 +218,7 @@ function calculateEMI() {
 
 function drawPie(principal, interest) {
   if (pieChart) pieChart.destroy();
-  pieChart = new Chart(pieChartCanvas(), {
+  pieChart = new Chart(document.getElementById("pieChart"), {
     type: "pie",
     data: {
       labels: ["Principal", "Interest"],
@@ -167,7 +235,7 @@ function drawBar(data) {
 
   let labels = data.map((_, i) => "Year " + (i + 1));
 
-  barChart = new Chart(barChartCanvas(), {
+  barChart = new Chart(document.getElementById("barChart"), {
     type: "bar",
     data: {
       labels: labels,
@@ -183,13 +251,6 @@ function drawBar(data) {
       }
     }
   });
-}
-
-function pieChartCanvas() {
-  return document.getElementById("pieChart").getContext("2d");
-}
-function barChartCanvas() {
-  return document.getElementById("barChart").getContext("2d");
 }
 </script>
 
