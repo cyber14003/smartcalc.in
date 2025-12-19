@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SIP Calculator India – Monthly Investment & Returns</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SIP Calculator India to calculate mutual fund SIP returns with investment breakup and charts.">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  padding: 20px;
+}
+.container {
+  max-width: 900px;
+  background: #fff;
+  padding: 20px;
+  margin: auto;
+  border-radius: 8px;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+button {
+  background: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.result {
+  margin-top: 10px;
+  font-weight: bold;
+}
+.chart-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+canvas {
+  max-width: 400px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>SIP Calculator (India)</h1>
+
+<p>
+Use this SIP Calculator to estimate your mutual fund returns based on monthly
+investment, expected annual return, and investment duration.
+</p>
+
+<input type="number" id="monthly" placeholder="Monthly SIP Amount (₹)">
+<input type="number" id="rate" placeholder="Expected Annual Return (%)">
+<input type="number" id="years" placeholder="Investment Duration (Years)">
+
+<button onclick="calculateSIP()">Calculate SIP Returns</button>
+
+<div class="result" id="invested"></div>
+<div class="result" id="returns"></div>
+<div class="result" id="total"></div>
+
+<div class="chart-wrapper">
+  <canvas id="sipChart"></canvas>
+</div>
+
+<!-- SEO CONTENT -->
+
+<h2>What is SIP?</h2>
+<p>
+SIP (Systematic Investment Plan) is a method of investing a fixed amount regularly
+in mutual funds. It helps investors build wealth over time through disciplined investing.
+</p>
+
+<h2>SIP Calculation Formula</h2>
+<p>
+The SIP maturity amount is calculated using the formula:
+</p>
+<p>
+<strong>M = P × [(1 + r)<sup>n</sup> − 1] / r × (1 + r)</strong>
+</p>
+<ul>
+<li><strong>P</strong> = Monthly investment amount</li>
+<li><strong>r</strong> = Monthly rate of return</li>
+<li><strong>n</strong> = Number of months</li>
+</ul>
+
+<h2>Example of SIP Calculation</h2>
+<p>
+If you invest ₹5,000 per month for 10 years at an expected return of 12% per annum,
+your total investment will be ₹6,00,000 and the estimated value will be around ₹11.6 lakhs.
+</p>
+
+<h2>Benefits of SIP</h2>
+<ul>
+<li>Disciplined investing</li>
+<li>Power of compounding</li>
+<li>Rupee cost averaging</li>
+<li>Flexible investment amount</li>
+</ul>
+
+<h2>FAQs</h2>
+
+<h3>Is SIP better than lump sum?</h3>
+<p>
+SIP reduces market timing risk and is suitable for long-term investors.
+</p>
+
+<h3>Can I stop SIP anytime?</h3>
+<p>
+Yes, SIPs can be stopped or modified at any time without penalties.
+</p>
+
+</div>
+
+<script>
+let sipChart;
+
+function calculateSIP() {
+  let P = parseFloat(monthly.value);
+  let annualRate = parseFloat(rate.value);
+  let years = parseInt(document.getElementById("years").value);
+
+  if (!P || !annualRate || !years) {
+    alert("Please enter all values");
+    return;
+  }
+
+  let r = annualRate / 12 / 100;
+  let n = years * 12;
+
+  let maturity = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+  let invested = P * n;
+  let gain = maturity - invested;
+
+  document.getElementById("invested").innerHTML =
+    "Total Investment: ₹" + invested.toFixed(2);
